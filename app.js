@@ -1,24 +1,46 @@
-// ------------------ Import ------------------ //
-//import app express
+//Import d'Express
 const express = require('express');
-//import routes
-const router = require('./router');
 
+//Import du package Mongoose pour faciliter les interactions avec la base de données MongoDB
+const mongoose = require('mongoose');
 
+//Import du package dotenv pour accès aux variables d'environnement
+require('dotenv').config();
 
-// ------------------ Main app ------------------ //
-//init app express
+//Import du path qui donne accès au système fichier
+const path = require('path');
+
+//Import du package CORS
+const cors = require('cors');
+
+//Import du router sauce
+const sauceRoutes = require('./routes/sauce')
+
+//Import du router utilisateur
+const userRoutes = require('./routes/user');
+
+//Lancement de l'application express
 const app = express();
 
-// parse application/json
+//Connexion à la base de données
+mongoose.connect('mongodb+srv://admin:admindbpassword@cluster0.ugojq2b.mongodb.net/P6-OpenClassrooms?retryWrites=true&w=majority',
+    { useNewUrlParser: true, 
+    useUnifiedTopology: true })
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch(() => console.log('Connexion à MongoDB échouée !'));
+
+//Analyse et formatage du corps des requêtes
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-//init routes
-app.use(router)
+//Correction des erreurs CORS
+app.use(cors());
 
+//Utilisation des routeurs
+app.use('/api/sauces', sauceRoutes);
+app.use('/api/auth', userRoutes);
 
-// ------------------ Start server ------------------ //
-app.listen(4000, () => {
-    console.log('app listening on port 4000!');
-});
+//Gestion du routage pour les images
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+//Export de l'application
+module.exports = app;

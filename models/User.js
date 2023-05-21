@@ -1,13 +1,18 @@
-// models/User.js
-
-// Importation de mongoose
+//Import de Mongoose pour utilisation
 const mongoose = require('mongoose');
 
-// Création du schéma de données pour les utilisateurs
-const UserSchema = new mongoose.Schema({
+//Ajout de unique validator pour éviter d'avoir plusieurs utilisateurs avec la même adresse mail
+const uniqueValidator = require('mongoose-unique-validator');
+
+//Création du schéma de données Utilisateur
+const userSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    // Ajoutez ici d'autres champs selon vos besoins
+    password: { type: String, required: true }
 });
 
-module.exports = mongoose.model('users', UserSchema);
+//Application du validateur au schéma 
+userSchema.plugin(uniqueValidator);
+
+//Export du modèle pour exploitation
+module.exports = mongoose.model('User', userSchema);
+
