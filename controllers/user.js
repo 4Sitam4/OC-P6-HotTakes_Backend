@@ -12,6 +12,10 @@ require('dotenv').config();
 
 //Création et enregistrement des nouveaux utilisateurs
 exports.signup = async (req, res, next) => {
+    //Vérification de la longueur du mot de passe
+    if(req.body.password.length < 6) {
+        return res.status(400).json({ message: 'Le mot de passe doit contenir au moins 6 caractères!' });
+    }
     //Hachage du mot de passe avec bcrypt
     try {
         const hash = await bcrypt.hash(req.body.password, 10);
@@ -26,6 +30,7 @@ exports.signup = async (req, res, next) => {
         res.status(500).json({ error });
     }
 };
+
 
 //Gestion de la connexion des utilisateurs
 exports.login = async (req, res, next) => {
