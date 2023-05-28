@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt');
 //Import du package jsonwebtoken
 const jwt = require('jsonwebtoken');
 
+//Import du package mongoose
+const mongoose = require('mongoose');
+
 //Import du modele de données User pour utilisation
 const User = require('../models/User');
 
@@ -27,9 +30,15 @@ exports.signup = async (req, res, next) => {
         res.status(201).json({ message: 'Utilisateur créé !' });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ error });
+        // If it's a validation error and the email is not unique
+        if (error.name === 'ValidationError' && error.errors.email.kind === 'unique') {
+            res.status(409).json({ message: 'Cet email est déjà utilisé !' });
+        } else {
+            res.status(500).json({ error });
+        }
     }
 };
+
 
 
 //Gestion de la connexion des utilisateurs
