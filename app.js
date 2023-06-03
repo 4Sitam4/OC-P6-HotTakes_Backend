@@ -23,7 +23,7 @@ const userRoutes = require('./routes/user');
 const app = express();
 
 //Connexion à la base de données
-mongoose.connect('mongodb+srv://admin:admindbpassword@cluster0.ugojq2b.mongodb.net/P6-OpenClassrooms?retryWrites=true&w=majority',
+mongoose.connect(process.env.MONGODB_URL,
     { useNewUrlParser: true, 
     useUnifiedTopology: true })
     .then(() => console.log('Connexion à MongoDB réussie !'))
