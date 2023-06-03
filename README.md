@@ -13,7 +13,7 @@ Create a folder to store the front and back, then inside the new folder ->
 
 - git clone https://github.com/4Sitam4/OC-P6-HotTakes_Backend.git (inside backend folder)
 - npm install
-- create an .env file in the root of the backend folder (or use mine)
+- create an .env file in the root of the backend folder (use template.env to fill it)
 - npm run start
 
 ## Frontend :
